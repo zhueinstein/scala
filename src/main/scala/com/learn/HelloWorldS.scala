@@ -5,6 +5,6 @@ package com.learn
   */
 object HelloWorldS {
   def main(args: Array[String]): Unit = {
-    println("HelloWorldJ, Scala!")
+    println("HelloWorld, Scala!")
   }
 }
