@@ -35,5 +35,50 @@ object ExtractorTest {
 
         val ss = 1 :: 2 :: 3 :: 4 ::Nil
         println(ss.last, ss.head, ss.drop(1).dropRight(1))
+
+
+        val gameResults:Seq[(String, Int)] = ("wifu", 1000)::("sdas", 2000)::("hello", 3000)::Nil;
+
+        def names = for {
+            result <- gameResults
+            (name, score) = result
+            if(score > 2000)
+        } yield name
+
+        println(s"$names")
+
+        /**
+          * 去除空的集合
+          */
+        val list = List(0,1,2,3)::List.empty::List(4,3)::Nil
+       val filter =  for {
+            list@ head :: _ <- list
+        } yield list
+
+        println(s"$filter")
+
+        /**
+          * 小写转大写
+          */
+
+        val songList = List("we are champion", "the moon")
+        println(songList.map(_.toUpperCase))
+
+
+        val wordFrequencies = ("habitual", 6) :: ("and", 56) :: ("consuetudinary", 2) ::
+            ("additionally", 27) :: ("homely", 5) :: ("society", 13) :: Nil
+        def wordsWithoutLines(wordFrequencies: Seq[(String, Int)]): Seq[String] =
+            wordFrequencies.filter(wf => wf._2 > 3 && wf._2 < 25).map(_._1)
+
+        println(wordsWithoutLines(wordFrequencies))
+
+        def wordsWithoutLines2(wordFrequencies: Seq[(String, Int)]): Seq[String] =
+            wordFrequencies.filter{ case (_, t) => t > 3 && t < 25 } map {case (w, _) => w}
+
+        /**
+          * 偏函数写法
+          */
+        def wordsWithoutLines3(wordFrequencies: Seq[(String, Int)]): Seq[String] =
+            wordFrequencies.collect{case (w, t)  if t > 3 && t < 25 => w}
     }
 }
