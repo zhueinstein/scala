@@ -1,7 +1,7 @@
 package com.learn.tryBlock
 
-import java.io.InputStream
-import java.net.URL
+import java.io.{FileNotFoundException, InputStream}
+import java.net.{MalformedURLException, URL}
 
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
@@ -44,5 +44,12 @@ object TryParseURL{
             case Failure(ex) => println(s"Problem rendering URL content: ${ex.getMessage}")
         }
 
+       val content =  TryParseURL.apply.getUrlContent("https://wasdasdasd/") recover  {
+            case e: FileNotFoundException => Iterator("Requested page does not exist")
+            case e: MalformedURLException => Iterator("Please make sure to enter a valid URL")
+            case _ => Iterator("An unexpected error has occurred. We are so sorry!")
+        }
+
+        println(s"$content")
     }
 }
