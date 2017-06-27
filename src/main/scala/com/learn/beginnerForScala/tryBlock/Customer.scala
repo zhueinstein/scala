@@ -1,4 +1,4 @@
-package com.learn.tryBlock
+package com.learn.beginnerForScala.tryBlock
 
 import java.net.URL
 

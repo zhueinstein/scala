@@ -1,4 +1,4 @@
-package com.learn.covariant
+package com.learn.beginnerForScala.covariant
 
 import scala.runtime.Nothing$
 

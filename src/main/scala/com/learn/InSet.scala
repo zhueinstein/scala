@@ -1,6 +1,6 @@
 package com.learn
 
-import com.learn.intset.IntSet
+import com.learn.beginnerForScala.intset.IntSet
 
 /**
   * Created by admin on 2017/6/21.

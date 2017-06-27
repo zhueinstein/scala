@@ -1,4 +1,4 @@
-package com.learn.expr
+package com.learn.beginnerForScala.expr
 
 /**
   * Created by admin on 2017/6/21.

@@ -1,4 +1,4 @@
-package com.learn.advancedFunction
+package com.learn.beginnerForScala.advancedFunction
 
 /**
   * Created by admin on 2017/6/26.
@@ -55,14 +55,14 @@ object Email{
             "码云"
         )::Nil
         newMailsForUser(mails, emailSender).map(u => println(u.recipient))
-        val every = every{
-            maximumSize(1100)
-            minimumSize(15)
-        }
+//        val every = every{
+//            maximumSize(1100)
+//            minimumSize(15)
+//        }
         val sizeChecker:EmailFilter = maximumSize(100)
 
         newMailsForUser(mails, sizeChecker).map(u => println(u.text))
-        newMailsForUser(mails, every).map(u => println(u.text))
+//        newMailsForUser(mails, every).map(u => println(u.text))
     }
 
 }

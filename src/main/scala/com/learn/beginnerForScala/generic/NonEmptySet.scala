@@ -1,4 +1,4 @@
-package com.learn.generic
+package com.learn.beginnerForScala.generic
 
 /**
   * Created by admin on 2017/6/22.

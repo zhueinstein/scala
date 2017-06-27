@@ -1,4 +1,4 @@
-package com.learn.covariant
+package com.learn.beginnerForScala.covariant
 
 /**
   * Created by admin on 2017/6/22.

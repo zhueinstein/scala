@@ -1,4 +1,4 @@
-package com.learn.intset
+package com.learn.beginnerForScala.intset
 
 /**
   * Created by admin on 2017/6/21.
