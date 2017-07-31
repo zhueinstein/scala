@@ -1,14 +1,12 @@
 package com.learn.beginnerForScala.typeclass
 
-import org.joda.time.Duration._
-import org.joda.time.Duration
-import JodaImplicits._
+
 
 /**
   * Created by zcx on 2017/6/27.
   */
 object Statistics {
-	import Math.NumberLike
+	import Math.NumberLike//
 	def mean[T](xs: Vector[T])(implicit ev: NumberLike[T]): T =
 		ev.divide(xs.reduce(ev.plus(_, _)), xs.size)
 
@@ -26,7 +24,7 @@ object Statistics {
 		/*val strs = Vector[String]("a","d")
 		println(mean(strs))*/
 
-		val durations = Vector[Duration](standardSeconds(2000), standardSeconds(213131))
-		println(mean(durations))
+//		val durations = Vector[Duration](standardSeconds(2000), standardSeconds(213131))
+//		println(mean(durations))
 	}
 }
