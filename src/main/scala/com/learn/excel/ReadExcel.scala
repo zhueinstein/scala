@@ -1,0 +1,139 @@
+package com.learn.excel
+
+import info.folone.scala.poi.{FormulaCell, NumericCell, Row, Sheet, StringCell, Workbook}
+
+import scala.math.BigDecimal.RoundingMode
+import scalaz.{-\/, \/-}
+
+
+/**
+  * Created by zcx on 2017/9/13.
+  */
+class ReadExcel {
+	var list: List[DrugExcelInfo] = List()
+
+	def readExcel(): List[DrugExcelInfo] = {
+		val readResult = Workbook("/Users/zcx/scalaExcelTest/20170915-芜湖市&马鞍山目录 药品打分-v1.0.xlsx")
+			.map(workbook => workbook.sheets)
+			.run
+			.unsafePerformIO()
+
+		readResult match {
+			case -\/(exception) => throw new RuntimeException("Could not read file", exception)
+			case \/-(sheets) => sheets.foreach(printSheet)
+		}
+		list
+	}
+		def printSheet(sheet: Sheet): Unit = {
+			if(sheet.name.equals("马鞍山销售目录")){
+				println(s"------------ ${sheet.name} ------------\n")
+				val list:List[Row]  = sheet.rows.toList.filter( row => row.index != 0)
+				list.foreach { row =>
+					row match {
+						case Row(index, _) => if (index > 0 && index <= 160) handleRow(row)
+
+					}
+				}
+		}
+
+//			list.foreach(ss => println(ss.index + "      " + ss))
+		}
+		def handleRow(row: Row): Unit = {
+			val drug = new DrugExcelInfo;
+			row.cells.toList.sortBy(_.index) .foreach { ss =>
+				ss match {
+					case StringCell(index, data) => addToList(index, data, drug)
+					case NumericCell(index, data) => addToList(index, data.toString, drug)
+					case FormulaCell(index, data) => addToList(index, data, drug)
+					case _ => print("类型匹配错误")
+				}
+			}
+			list = drug +: list
+
+		}
+		def addToList(index: Int, data: String, drug: DrugExcelInfo) ={
+			index match {
+				case 0 => if(!data.isEmpty) drug.setDrugCode(data)
+				case 1 => if(!data.isEmpty) drug.setCommonName(data)
+				case 2 => if(!data.isEmpty) drug.setMainIngredients(data)
+				case 3 => if(!data.isEmpty) drug.setDrugCategory(data)
+				case 4 => if(!data.isEmpty) drug.setMasSolo( BigDecimal(data).setScale(0).intValue())
+				case 5 => if(!data.isEmpty) drug.setDrugName(data)
+				case 6 => if(!data.isEmpty) drug.setApplyDiagnose(data)
+				case 7 => if(!data.isEmpty) drug.setCommProducer(data)
+				case 8 => if(!data.isEmpty) drug.setContainsOriginatorProductProportion(data)
+				case 9 => if(!data.isEmpty) drug.setStandard(data)
+				case 10 => if(!data.isEmpty) drug.setConversionRatio(BigDecimal(data).setScale(0).intValue())
+				case 11 => if(!data.isEmpty) drug.setDosageForms(data)
+				case 12 => if(!data.isEmpty) drug.setPackageUnit(data)
+				case 13 => if(!data.isEmpty) drug.setProducer(data)
+				case 14 => if(!data.isEmpty) drug.setApprovalNumber(data)
+				case 15 => if(!data.isEmpty) drug.setState(data)
+				case 16 => if(!data.isEmpty) drug.setPrice(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 17 => if(!data.isEmpty) drug.setWhScale(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 18 => if(!data.isEmpty) drug.setSupplement(data)
+				case 19 => if(!data.isEmpty) drug.setRecommendDosage(data)
+				case 20 => if(!data.isEmpty) drug.setMonthUsage(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 21 => if(!data.isEmpty) drug.setMonthTreatmentExpense(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+
+				case 22 => if(!data.isEmpty) if(!data.isInstanceOf[String])drug.setOriginatorProductGenericDrugCostGap(BigDecimal(data).bigDecimal)
+				case 23 => if(!data.isEmpty) if(!data.isInstanceOf[BigDecimal]) drug.setContainsOriginatorProductProportionReagent(data)
+				case 24 => if(!data.isEmpty) drug.setClinicalGuideline(BigDecimal(data).intValue())
+				case 25 => if(!data.isEmpty) drug.setMedicalInsuranceCategory(data)
+				case 26 => if(!data.isEmpty) drug.setOriginatorProduct(data)
+				case 27 => if(!data.isEmpty) drug.setEffectType(data)
+				case 28 => if(!data.isEmpty) drug.setMedicineConvenience(data)
+				case 29 => if(!data.isEmpty) drug.setMarketShare(data)
+				case 30 => if(!data.isEmpty) drug.setQuotedCompany(data)
+
+				case 33 => if(!data.isEmpty) drug.setScoreSummary(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 34 => if(!data.isEmpty) drug.setScoreRecommendGuide(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 35 => if(!data.isEmpty) drug.setScoreMedicalInsurance(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 36 => if(!data.isEmpty) drug.setScoreOriginatorProduct(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 37 => if(!data.isEmpty) drug.setScoreEffectType(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 38 => if(!data.isEmpty) drug.setScoreMedicineConvenience(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 39 => if(!data.isEmpty) drug.setScoreMarketRate(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 40 => if(!data.isEmpty) drug.setScoreMarketShare(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 41 => if(!data.isEmpty) drug.setScoreQuotedCompany(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 42 => if(!data.isEmpty) drug.setScoreTreatmentExpense(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case _ =>
+
+			}
+		}
+		//def xlsFile: InputStream = ReadExcelFile.getClass.getResourceAsStream("/test.xls")
+		def readFileTest()={
+			val readResult = Workbook("/Users/zcx/scalaExcelTest/20170915-芜湖市&马鞍山目录 药品打分-v1.0.xlsx")
+				.map(workbook => workbook.sheets)
+				.run
+				.unsafePerformIO()
+
+			readResult match {
+				case -\/(exception) => throw new RuntimeException("Could not read file", exception)
+				case \/-(sheets) => sheets.foreach{sheet =>
+					sheet match {
+						case Sheet(name, _) => name match {
+							case "马鞍山销售目录" => {
+								println(s"------------ ${sheet.name} ------------\n")
+								val list:List[Row]  = sheet.rows.toList.filter( row => row.index != 0)
+								list.foreach{row => row match {
+									case Row(index) =>  if(index != 0) {
+										println(row.cells.toList.sortBy(cell => cell.index).mkString(","))
+									}}
+
+								}
+							}
+							case _ =>
+						}
+					}
+
+				}
+			}
+		}
+}
+
+object ReadExcel extends App{
+	def apply: ReadExcel = new ReadExcel()
+
+	ReadExcel.apply.readFileTest()
+}
+
