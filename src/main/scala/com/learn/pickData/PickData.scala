@@ -8,27 +8,29 @@ import play.api.libs.json.{JsError, Json}
   * Created by zcx on 2017/9/21.
   */
 class PickData {
-	def pickData(): Set[ExportData] ={
-		val caseName = "芜湖2017年05月01日-2017年07月30日处方评分";
+	def pickData(skip: Int, limit: Int): Set[ExportData] ={
+		val caseName = "杭州市阿里巴巴技术有限公司";
 		val db = MongoOperator.apply.mongoClient("audit_test");
-		println(db.collectionNames().mkString(" "))
 		val collCase = db("audit_case")
 		val caseId = collCase.findOne(DBObject("name" -> caseName)).get.get("_id").toString
 
 		val collOrder = db("audit_order")
-		val auditOrders = collOrder.find(DBObject("caseId" -> caseId)).toList
-		val collResult = db("audit_result")
+		val auditOrders = collOrder.find(DBObject("caseId" -> caseId)).skip(skip).limit(limit).toList
 
-		val results = collResult.find(DBObject("caseId" -> caseId, "resultType" -> 1)).toList
+		val collResult = db("audit_result")
+		val in = auditOrders.map(ds => ds.get("_id").toString)
+		// casbah dsl 写法
+		val dsl = ("caseId" $eq caseId) ++ ("orderId" $in (in)) ++ ("resultType" $ne 3) ++ ("grade" $ne None) ++ ("drugScores" $ne None)
+		val results =collResult.find(dsl).toList
+
 		implicit val patientFormat = Json.format[Patient]
 		implicit val diseaseFormat = Json.format[Disease]
 		implicit val categoryFormat = Json.format[Category]
 		implicit val ingredientFormat = Json.format[Ingredient]
 		implicit val drugFormat = Json.format[Drug]
+		implicit val resultFormat = Json.format[Result]
 		implicit val orderFormat = Json.format[AuditOrder]
 		val orderObjects = auditOrders.map(order => (Json.fromJson[AuditOrder](Json.parse(order.toString)).get))
-
-		implicit val resultFormat = Json.format[Result]
 		val resultObjects = results.map(result => Json.fromJson[Result](Json.parse(result.toString)).get)
 		var set: scala.collection.mutable.Set[ExportData] = scala.collection.mutable.Set[ExportData](ExportData(0, "", "", 0, "", "", "", "", "",BigDecimal(1), "", "", ""))
 		var number = 1
@@ -55,7 +57,7 @@ case class ExportData(number: Int, orderNo: String, patientName: String, age: In
 object PickData extends App{
 	def apply: PickData = new PickData()
 
-	PickData.apply.pickData()
+//	PickData.apply.pickData()
 }
 
 
@@ -63,9 +65,8 @@ case class AuditOrder(_id: Map[String, String], orderNo: String, patient:Patient
 
 case class Patient(name: String, age: Int, sex: Int, idCard: String)
 case class Disease(diseaseName: String)
-case class Drug(drugCode: String, drugName: String, usage: String, number: String, price: String, dosage: String
-, packageSize: Int,
-maximumDose: String, maximumDoseDaily: String, commonName: String)
+case class Drug(drugCode: String, drugName: String, usage: String, number: String, price: String, dosage: String , packageSize: Int,
+					maximumDose: String, maximumDoseDaily: String, commonName: String, standard: String, producer: String)
 case class Category(categoryName: String)
 case class Ingredient(ingredientName: String)
 case class Result(caseId: String, orderId: String, grade: String, drugScores: Map[String, Int])

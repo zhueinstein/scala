@@ -13,7 +13,7 @@ class ReadExcel {
 	var list: List[DrugExcelInfo] = List()
 
 	def readExcel(): List[DrugExcelInfo] = {
-		val readResult = Workbook("/Users/zcx/scalaExcelTest/20170915-芜湖市&马鞍山目录 药品打分-v1.0.xlsx")
+		val readResult = Workbook("/Users/zcx/scalaExcelTest/20170915-芜湖市&马鞍山目录 药品打分-v1.0(1).xlsx")
 			.map(workbook => workbook.sheets)
 			.run
 			.unsafePerformIO()
@@ -53,38 +53,38 @@ class ReadExcel {
 		}
 		def addToList(index: Int, data: String, drug: DrugExcelInfo) ={
 			index match {
-				case 0 => if(!data.isEmpty) drug.setDrugCode(data)
-				case 1 => if(!data.isEmpty) drug.setCommonName(data)
-				case 2 => if(!data.isEmpty) drug.setMainIngredients(data)
-				case 3 => if(!data.isEmpty) drug.setDrugCategory(data)
+				case 0 => if(!data.isEmpty) drug.setDrugCode(data.trim)
+				case 1 => if(!data.isEmpty) drug.setCommonName(data.trim)
+				case 2 => if(!data.isEmpty) drug.setMainIngredients(data.trim)
+				case 3 => if(!data.isEmpty) drug.setDrugCategory(data.trim)
 				case 4 => if(!data.isEmpty) drug.setMasSolo( BigDecimal(data).setScale(0).intValue())
-				case 5 => if(!data.isEmpty) drug.setDrugName(data)
-				case 6 => if(!data.isEmpty) drug.setApplyDiagnose(data)
-				case 7 => if(!data.isEmpty) drug.setCommProducer(data)
-				case 8 => if(!data.isEmpty) drug.setContainsOriginatorProductProportion(data)
-				case 9 => if(!data.isEmpty) drug.setStandard(data)
+				case 5 => if(!data.isEmpty) drug.setDrugName(data.trim)
+				case 6 => if(!data.isEmpty) drug.setApplyDiagnose(data.trim)
+				case 7 => if(!data.isEmpty) drug.setCommProducer(data.trim)
+				case 8 => if(!data.isEmpty) drug.setContainsOriginatorProductProportion(data.trim)
+				case 9 => if(!data.isEmpty) drug.setStandard(data.trim)
 				case 10 => if(!data.isEmpty) drug.setConversionRatio(BigDecimal(data).setScale(0).intValue())
-				case 11 => if(!data.isEmpty) drug.setDosageForms(data)
-				case 12 => if(!data.isEmpty) drug.setPackageUnit(data)
-				case 13 => if(!data.isEmpty) drug.setProducer(data)
-				case 14 => if(!data.isEmpty) drug.setApprovalNumber(data)
-				case 15 => if(!data.isEmpty) drug.setState(data)
+				case 11 => if(!data.isEmpty) drug.setDosageForms(data.trim)
+				case 12 => if(!data.isEmpty) drug.setPackageUnit(data.trim)
+				case 13 => if(!data.isEmpty) drug.setProducer(data.trim)
+				case 14 => if(!data.isEmpty) drug.setApprovalNumber(data.trim)
+				case 15 => if(!data.isEmpty) drug.setState(data.trim)
 				case 16 => if(!data.isEmpty) drug.setPrice(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
 				case 17 => if(!data.isEmpty) drug.setWhScale(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
-				case 18 => if(!data.isEmpty) drug.setSupplement(data)
-				case 19 => if(!data.isEmpty) drug.setRecommendDosage(data)
+				case 18 => if(!data.isEmpty) drug.setSupplement(data.trim)
+				case 19 => if(!data.isEmpty) drug.setRecommendDosage(data.trim)
 				case 20 => if(!data.isEmpty) drug.setMonthUsage(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
-				case 21 => if(!data.isEmpty) drug.setMonthTreatmentExpense(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 21 => if(!data.isEmpty) drug.setMonthTreatmentExpense(BigDecimal(data).setScale(4, RoundingMode.HALF_UP).bigDecimal)
 
-				case 22 => if(!data.isEmpty) if(!data.isInstanceOf[String])drug.setOriginatorProductGenericDrugCostGap(BigDecimal(data).bigDecimal)
+				case 22 => if(!data.isEmpty) {val newData = data.replace("%", ""); println(newData); drug.setOriginatorProductGenericDrugCostGap(BigDecimal(newData).bigDecimal)}
 				case 23 => if(!data.isEmpty) if(!data.isInstanceOf[BigDecimal]) drug.setContainsOriginatorProductProportionReagent(data)
 				case 24 => if(!data.isEmpty) drug.setClinicalGuideline(BigDecimal(data).intValue())
-				case 25 => if(!data.isEmpty) drug.setMedicalInsuranceCategory(data)
-				case 26 => if(!data.isEmpty) drug.setOriginatorProduct(data)
-				case 27 => if(!data.isEmpty) drug.setEffectType(data)
-				case 28 => if(!data.isEmpty) drug.setMedicineConvenience(data)
-				case 29 => if(!data.isEmpty) drug.setMarketShare(data)
-				case 30 => if(!data.isEmpty) drug.setQuotedCompany(data)
+				case 25 => if(!data.isEmpty) drug.setMedicalInsuranceCategory(data.trim)
+				case 26 => if(!data.isEmpty) drug.setOriginatorProduct(data.trim)
+				case 27 => if(!data.isEmpty) drug.setEffectType(data.trim)
+				case 28 => if(!data.isEmpty) drug.setMedicineConvenience(data.trim)
+				case 29 => if(!data.isEmpty) drug.setMarketShare(data.trim)
+				case 30 => if(!data.isEmpty) drug.setQuotedCompany(data.trim)
 
 				case 33 => if(!data.isEmpty) drug.setScoreSummary(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
 				case 34 => if(!data.isEmpty) drug.setScoreRecommendGuide(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
@@ -96,6 +96,10 @@ class ReadExcel {
 				case 40 => if(!data.isEmpty) drug.setScoreMarketShare(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
 				case 41 => if(!data.isEmpty) drug.setScoreQuotedCompany(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
 				case 42 => if(!data.isEmpty) drug.setScoreTreatmentExpense(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 44 => if(!data.isEmpty) drug.setScoreExpertOpinion(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 45 => if(!data.isEmpty) drug.setScorePoisonousDrug(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				/*case 46 => if(!data.isEmpty) drug.setScoreFinalTransform(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)
+				case 47 => if(!data.isEmpty) drug.setScoreFinal(BigDecimal(data).setScale(2, RoundingMode.HALF_UP).bigDecimal)*/
 				case _ =>
 
 			}

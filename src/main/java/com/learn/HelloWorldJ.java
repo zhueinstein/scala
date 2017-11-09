@@ -1,13 +1,17 @@
 package com.learn;
 
-import com.learn.excel.DrugInfo;
-import com.learn.excel.MongoOperator;
-import com.learn.excel.ReadExcel;
-import com.learn.excel.TestExcel;
+import com.google.common.collect.Lists;
 
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.time.Year;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Created by admin on 2017/6/15.
  */
@@ -32,5 +36,25 @@ public class HelloWorldJ {
         MongoOperator mongoOperator = new MongoOperator();
 
        mongoOperator.drugInfo();*/
+        /*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DATE, 01);
+        List<String> monthlySaleList = Lists.newArrayList();
+        for(int i = 1; i <= 12; i++){
+            monthlySaleList.add(sdf.format(new Date(calendar.getTimeInMillis())));
+            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) -1);
+            System.err.println(calendar.get(Calendar.MONTH));
+        }
+
+        monthlySaleList.forEach(System.out::println);*/
+        //System.out.println(new BigDecimal(38.904).setScale(1, RoundingMode.CEILING).multiply(new BigDecimal(100)));
+       // BigDecimal ss = new BigDecimal(25.50 * 0.2 + 18.78 * 9 *0.20).setScale(1, RoundingMode.CEILING);
+        //System.out.println(ss);
+        List<BigDecimal> b = Lists.newArrayList();
+        Optional<BigDecimal> bg = b.stream().reduce((b1, b2) -> b1.add(b2));
+        if(bg.isPresent()) System.out.println(bg.get()); else System.out.println(BigDecimal.ZERO);
+
     }
+
+
 }

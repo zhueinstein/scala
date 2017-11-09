@@ -57,7 +57,10 @@ public class DrugExcelInfo {
     private BigDecimal scoreQuotedCompany; //评级-上市公司
     private BigDecimal scoreTreatmentExpense; //治疗费用评分
 //    private BigDecimal scoreApprovalStandards; //评分-持有的认证标准
-
+    private BigDecimal scoreExpertOpinion; //  专家意见调分
+    private BigDecimal scorePoisonousDrug; // 毒副作用
+    /*private BigDecimal scoreFinal; // 导入Excel等级分数
+    private BigDecimal scoreFinalTransform; // 导入excel等级转化为100 的分数*/
 
     public String getDrugCode() {
         return drugCode;
@@ -386,4 +389,36 @@ public class DrugExcelInfo {
     public void setScoreTreatmentExpense(BigDecimal scoreTreatmentExpense) {
         this.scoreTreatmentExpense = scoreTreatmentExpense;
     }
+
+    public BigDecimal getScoreExpertOpinion() {
+        return scoreExpertOpinion;
+    }
+
+    public void setScoreExpertOpinion(BigDecimal scoreExpertOpinion) {
+        this.scoreExpertOpinion = scoreExpertOpinion;
+    }
+
+    public BigDecimal getScorePoisonousDrug() {
+        return scorePoisonousDrug;
+    }
+
+    public void setScorePoisonousDrug(BigDecimal scorePoisonousDrug) {
+        this.scorePoisonousDrug = scorePoisonousDrug;
+    }
+
+/*    public BigDecimal getScoreFinal() {
+        return scoreFinal;
+    }
+
+    public void setScoreFinal(BigDecimal scoreFinal) {
+        this.scoreFinal = scoreFinal;
+    }
+
+    public BigDecimal getScoreFinalTransform() {
+        return scoreFinalTransform;
+    }
+
+    public void setScoreFinalTransform(BigDecimal scoreFinalTransform) {
+        this.scoreFinalTransform = scoreFinalTransform;
+    }*/
 }

@@ -31,7 +31,7 @@ object DrugHandler extends App{
 			if(elem.getRecommendDosage != null) mb += ("recommendDosage" -> elem.getRecommendDosage)
 			if(elem.getMonthUsage != null) mb += ("monthUsage" -> elem.getMonthUsage.toString())
 			if(elem.getMonthTreatmentExpense != null) mb += ("monthTreatmentExpense" -> elem.getMonthTreatmentExpense.setScale(2, RoundingMode.HALF_UP).toString())
-			if(elem.getOriginatorProductGenericDrugCostGap != null) mb += ("originatorProductGenericDrugCostGap" -> elem.getOriginatorProductGenericDrugCostGap.setScale(2, RoundingMode.HALF_UP).toString())
+			if(elem.getOriginatorProductGenericDrugCostGap != null) mb += ("originatorProductGenericDrugCostGap" -> elem.getOriginatorProductGenericDrugCostGap.setScale(4, RoundingMode.HALF_UP).toString())
 			if(elem.getContainsOriginatorProductProportionReagent != null) mb += ("containsOriginatorProductProportionReagent" -> elem.getContainsOriginatorProductProportionReagent)
 			if(elem.getClinicalGuideline != null) mb += ("clinicalGuideline" -> elem.getClinicalGuideline.toString)
 			if(elem.getMedicalInsuranceCategory != null) mb += ("medicalInsuranceCategory" -> elem.getMedicalInsuranceCategory)
@@ -56,6 +56,10 @@ object DrugHandler extends App{
 			if(elem.getScoreMarketShare != null) mb += ("scoreMarketShare" -> elem.getScoreMarketShare.setScale(2, RoundingMode.HALF_UP).toString())
 			if(elem.getScoreQuotedCompany != null) mb += ("scoreQuotedCompany" -> elem.getScoreQuotedCompany.setScale(2, RoundingMode.HALF_UP).toString())
 			if(elem.getScoreTreatmentExpense != null) mb += ("scoreTreatmentExpense" -> elem.getScoreTreatmentExpense.setScale(2, RoundingMode.HALF_UP).toString())
+			if(elem.getScoreExpertOpinion != null) mb += ("scoreExpertOpinion" -> elem.getScoreExpertOpinion.setScale(2, RoundingMode.HALF_UP).toString())
+			if(elem.getScorePoisonousDrug != null) mb += ("scorePoisonousDrug" -> elem.getScorePoisonousDrug.setScale(2, RoundingMode.HALF_UP).toString())
+//			if(elem.getScoreFinal != null) mb += ("scoreFinal" -> elem.getScoreFinal)
+//			if(elem.getScoreFinalTransform != null) mb += ("scoreFinalTransform" -> elem.getScoreFinal)
 		}
 		coll.insert(mb)
 	}
@@ -69,5 +73,6 @@ case class DrugInfoObject(drugCode: String, drugName: String ,usage: String, num
 						  clinicalGuideline: String, medicalInsuranceCategory: String, originatorProduct: String, effectType: String,
 						  medicineConvenience: String,marketShare: String, quotedCompany: String, scoreSummary: BigDecimal, scoreRecommendGuide: BigDecimal,
 						  scoreMedicalInsurance: BigDecimal, scoreOriginatorProduct: BigDecimal, scoreEffectType: BigDecimal, scoreMedicineConvenience: BigDecimal,
-						  scoreMarketRate: BigDecimal, scoreMarketShare: BigDecimal, scoreQuotedCompany:BigDecimal, scoreTreatmentExpense:BigDecimal
+						  scoreMarketRate: BigDecimal, scoreMarketShare: BigDecimal, scoreQuotedCompany:BigDecimal, scoreTreatmentExpense:BigDecimal,
+						  scoreExpertOpinion: BigDecimal, scorePoisonousDrug:BigDecimal/*,scoreFinal:BigDecimal, scoreFinalTransform:BigDecimal*/
 						 )
