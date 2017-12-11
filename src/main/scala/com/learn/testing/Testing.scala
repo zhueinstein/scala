@@ -25,6 +25,6 @@ object Testing extends App{
 //	hsh ++= "2"
 //	print(hsh)
 
-
+val list = List[Map[String, Any]](Map("a" -> "1"))
 
 }
