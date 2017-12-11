@@ -9,6 +9,7 @@ import play.api.libs.json._
 
 /**
   * Created by zcx on 2017/9/13.
+  * 用途： 连接mongo数据库
   */
 class MongoOperator {
 
@@ -26,8 +27,6 @@ class MongoOperator {
 		implicit val diseaseFormat = Json.format[Disease]
 		implicit val IngredientFormat = Json.format[Ingredient]
 		implicit val drugInfoFormat = Json.format[DrugInfo]
-
-
 		coll.find().toList
 	}
 }

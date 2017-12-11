@@ -5,6 +5,7 @@ import info.folone.scala.poi.{NumericCell, Row, Sheet, StringCell, Workbook}
 
 /**
   * Created by zcx on 2017/9/26.
+  * 	用途： 生成美德医测试数据
   */
 class WriteMdsExcel {
 	def writer(data: (Set[ExcelEntity], Set[ExcelEntity])): Workbook = {

@@ -5,6 +5,7 @@ import info.folone.scala.poi.{BooleanCell, FormulaCell, NumericCell, Row, Sheet,
 
 /**
   * Created by zcx on 2017/9/13.
+  * 用途： 生成excel文档
   */
 class WriteExcel {
 	def writer(data: Set[ExportData]): Workbook = {

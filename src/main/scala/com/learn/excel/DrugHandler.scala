@@ -5,6 +5,7 @@ import com.mongodb.casbah.Imports._
 import scala.math.BigDecimal.RoundingMode
 /**
   * Created by zcx on 2017/9/14.
+  *
   */
 object DrugHandler extends App{
 	val excelList = ReadExcel.apply.readExcel()

@@ -10,6 +10,7 @@ import info.folone.scala.poi.{NumericCell, Row, Sheet, StringCell, Workbook}
 
 /**
   * Created by zcx on 2017/11/3.
+  * 用途： 导出mongo数据库药品分数
   */
 class ReadDrugScoreJson {
 	var list: List[DrugExcelInfo] = List()

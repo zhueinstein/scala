@@ -8,6 +8,7 @@ import scalaz.{-\/, \/-}
 
 /**
   * Created by zcx on 2017/9/13.
+  * 用途： 读取excel文档
   */
 class ReadExcel {
 	var list: List[DrugExcelInfo] = List()

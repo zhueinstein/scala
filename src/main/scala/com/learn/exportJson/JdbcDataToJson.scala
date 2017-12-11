@@ -10,6 +10,7 @@ import scala.collection.mutable.{Map, Set}
 import scala.math.BigDecimal.RoundingMode
 /**
   * Created by zcx on 2017/9/20.
+  *  用途： 导出数据库数据，用于审核系统的json文件
   */
 
 class JdbcDataToJson{
