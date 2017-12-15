@@ -26,6 +26,7 @@ class DrugInfoHandler {
 		val coll = db("drug_info")
 		implicit val categoryFormat = Json.format[Category]
 		implicit val IngredientFormat = Json.format[Ingredient]
+		implicit val DiagnoseFormat = Json.format[Diagnose]
 		implicit val drugInfoFormat = Json.format[DrugInfoForMongoChangSha]
 		val drugs = coll.toList.map(di => Json.fromJson[DrugInfoForMongoChangSha](Json.parse(di.toString)).get)
 		val preInt = 1000000000
@@ -33,14 +34,27 @@ class DrugInfoHandler {
 		for( drugInfo <- drugInfoList){
 			if(drugInfo.wanhuCommonName.isDefined){
 				if(drugInfo.wanhuCommonName.isDefined){
+					val mongoDB	= MongoDBObject.empty
+					mongoDB += ("drugCode" -> (preInt + drugInfo.drugCode + ""))
+					mongoDB += ("commonName" -> drugInfo.commonName)
+					mongoDB += ("producer" -> (if(drugInfo.producer.isDefined) drugInfo.producer.get else null))
+					if(drugInfo.standard.isDefined) {
+						mongoDB += ("standard" -> drugInfo.standard.get)
+					}
+					if(drugInfo.productName.isDefined) {
+						mongoDB += ("drugName" -> drugInfo.productName.get)
+					}
 					val changSha = drugs.filter(ds => ds.commonName.equals(drugInfo.wanhuCommonName.get)).filter(dd => dd.categorys.isDefined && dd.categorys.get.size > 0)
 					if(changSha!= null && changSha.size > 0){
-						val mongoDB	= MongoDBObject.empty
-						mongoDB += ("drugCode" -> (preInt + drugInfo.drugCode + ""))
-						mongoDB += ("commonName" -> drugInfo.commonName)
-						mongoDB += ("producer" -> (if(drugInfo.producer.isDefined) drugInfo.producer.get else null))
-						if(drugInfo.productName.isDefined)
-							mongoDB += ("drugName" -> drugInfo.productName.get)
+						if(changSha.head.applyDiagnose.isDefined){
+							val list = MongoDBList.empty
+							for(elem <- changSha.head.applyDiagnose.get){
+								val mongoDBs = MongoDBObject.empty
+								mongoDBs += ("diseaseName" -> elem.diseaseName)
+								list += mongoDBs
+							}
+							mongoDB += ("applyDiagnose" -> list)
+						}
 						if(changSha.head.categorys.isDefined){
 							val list = MongoDBList.empty
 							for (elem <- changSha.head.categorys.get) {
@@ -63,43 +77,22 @@ class DrugInfoHandler {
 						}
 						coll.insert(mongoDB)
 					}else{
-						val mongoDB	= MongoDBObject.empty
-						mongoDB += ("drugCode" -> (preInt + drugInfo.drugCode + ""))
-						mongoDB += ("commonName" -> drugInfo.commonName)
-						if(drugInfo.productName.isDefined) {
-							mongoDB += ("drugName" -> drugInfo.productName.get)
-						}
-						mongoDB += ("producer" -> (if(drugInfo.producer.isDefined) drugInfo.producer.get else null))
 						coll.insert(mongoDB)
 					}
 				}else{
-					val mongoDB	= MongoDBObject.empty
-					mongoDB += ("drugCode" -> (preInt + drugInfo.drugCode + ""))
-					mongoDB += ("commonName" -> drugInfo.commonName)
-					if(drugInfo.productName.isDefined) {
-						mongoDB += ("drugName" -> drugInfo.productName.get)
-					}
-					mongoDB += ("producer" -> (if(drugInfo.producer.isDefined) drugInfo.producer.get else null))
 					coll.insert(mongoDB)
 				}
 			}else{
-				val mongoDB	= MongoDBObject.empty
-				mongoDB += ("drugCode" -> (preInt + drugInfo.drugCode + ""))
-				mongoDB += ("commonName" -> drugInfo.commonName)
-				if(drugInfo.productName.isDefined) {
-					mongoDB += ("drugName" -> drugInfo.productName.get)
-				}
-				mongoDB += ("producer" -> (if(drugInfo.producer.isDefined) drugInfo.producer.get else null))
 				coll.insert(mongoDB)
 			}
 		}
 	}
 }
-case class DrugInfoForMongoChangSha(commonName: String, categorys: Option[List[Category]], mainIngredients: Option[List[Ingredient]])
+case class DrugInfoForMongoChangSha(commonName: String, categorys: Option[List[Category]], mainIngredients: Option[List[Ingredient]], applyDiagnose:Option[List[Diagnose]])
 case class MongoDrugInfo(drugCode: String, drugName: String , commonName: String, standard: String,
 						 producer:String, categorys: List[Category],mainIngredients: List[Ingredient]
 						)
-
+case class Diagnose(diseaseName: String)
 case class DrugInfo(drugCode: Int, commonName: String, productName: Option[String], standard: Option[String], producer: Option[String], wanhuCommonName: Option[String])
 
 object DrugInfoHandler extends App{
