@@ -32,18 +32,18 @@ class DrugInfoHandler {
 		val preInt = 1000000000
 		// 根据万户通用名匹配药品
 		for( drugInfo <- drugInfoList){
+			val mongoDB	= MongoDBObject.empty
+			mongoDB += ("drugCode" -> (preInt + drugInfo.drugCode + ""))
+			mongoDB += ("commonName" -> drugInfo.commonName)
+			mongoDB += ("producer" -> (if(drugInfo.producer.isDefined) drugInfo.producer.get else null))
+			if(drugInfo.standard.isDefined) {
+				mongoDB += ("standard" -> drugInfo.standard.get)
+			}
+			if(drugInfo.productName.isDefined) {
+				mongoDB += ("drugName" -> drugInfo.productName.get)
+			}
 			if(drugInfo.wanhuCommonName.isDefined){
 				if(drugInfo.wanhuCommonName.isDefined){
-					val mongoDB	= MongoDBObject.empty
-					mongoDB += ("drugCode" -> (preInt + drugInfo.drugCode + ""))
-					mongoDB += ("commonName" -> drugInfo.commonName)
-					mongoDB += ("producer" -> (if(drugInfo.producer.isDefined) drugInfo.producer.get else null))
-					if(drugInfo.standard.isDefined) {
-						mongoDB += ("standard" -> drugInfo.standard.get)
-					}
-					if(drugInfo.productName.isDefined) {
-						mongoDB += ("drugName" -> drugInfo.productName.get)
-					}
 					val changSha = drugs.filter(ds => ds.commonName.equals(drugInfo.wanhuCommonName.get)).filter(dd => dd.categorys.isDefined && dd.categorys.get.size > 0)
 					if(changSha!= null && changSha.size > 0){
 						if(changSha.head.applyDiagnose.isDefined){
