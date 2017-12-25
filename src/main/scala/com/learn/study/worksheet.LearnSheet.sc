@@ -16,6 +16,7 @@ val x: BigInt = 1234567890
 x * x * x
 
 
+import scala.collection.mutable
 import scala.math._
 
 sqrt(2)
@@ -41,3 +42,6 @@ fina
 if( x > 0) {
 	1
 }else if(x == 0) -1
+
+
+val stack = new mutable.Stack[Int]
