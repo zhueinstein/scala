@@ -97,3 +97,112 @@ object Teachers{
 		printtName
 	}
 }
+
+/**
+  * 包对象类
+  * 利用package关键字来定义单例对象
+  * 包对象主要用于常量、工具函数，通过包名引用
+  */
+
+/**
+  * 包对象被编译后生成了一个以包名称为名称的Math文件夹，文件夹下有两个对象package.class、package$.class ，通过单例对象的方式调用如下
+  *             BOOK:Math zcx$ ls
+		package$.class	package.class
+
+	  Compiled from "AccessFun.scala"
+		public final class com.learn.study.access.Math.package {
+		  public static double THETA();
+		  public static double PI();
+		}
+	  Compiled from "AccessFun.scala"
+		public final class com.learn.study.access.Math.package$ {
+		  public static final com.learn.study.access.Math.package$ MODULE$;
+		  private final double PI;
+		  private final double THETA;
+		  public static {};
+		  public double PI();
+		  public double THETA();
+		  private com.learn.study.access.Math.package$();
+		}
+  *
+  *
+  */
+package object Math{
+	val PI = 3.14
+	val THETA = 2.0
+}
+package object Math1{
+	val PI = 3.1415926
+}
+class Compute{
+	def computeArea(r: Double) = Math.PI * r * r
+}
+// 使用包对象
+object TestPackage{
+	def main(args: Array[String]): Unit = {
+		val compute = new Compute
+		println(compute.computeArea(1.0))
+	}
+}
+
+/**
+  *     import 高级属性
+  *     1、隐式引入
+  *             如果不引入任何包，scala会默认引入scala.lang._、scala._、Predef._包中或对象中的类及方法
+  *      2、重命名
+  *             scala允许对引入的类或者方法进行重命名，比如以下ReNameUsage
+  *       3、类隐藏
+  *                     比如 HideUsage
+  *
+  */
+
+object ReNameUsage{
+	import java.util.{HashMap => JavaHashMap}
+	import scala.collection.mutable.HashMap
+	def main(args: Array[String]): Unit = {
+		val javaHashMap = new JavaHashMap[String, String]()
+		javaHashMap.put("scala", "learning")
+		javaHashMap.put("java", "using")
+		for(k <- javaHashMap.keySet().toArray) {
+			println(k, javaHashMap.get(k))
+		}
+		val scalaHashMap:HashMap[String, String] = HashMap[String, String]()
+		scalaHashMap += ("english" -> "Just So So")
+		scalaHashMap += ("Chinese"-> "Very Good")
+		for((k, v) <- scalaHashMap){
+			println(k, v)
+		}
+	}
+}
+
+object HideUsage{
+	import java.util.{HashMap => _,_}
+	import scala.collection.mutable.HashMap
+	val hashMap = new HashMap[String, String]
+	hashMap.put("a", "q")
+	hashMap.put("b", "y")
+	hashMap.foreach(ds => {
+		val (key, value) = ds
+		println(key, value)
+	})
+}
+
+/**
+  *     内部类
+  *             1、外部类不能访问内部类的成员域，但是内部类可以访问外部类的成员域，哪怕这个成员域是私有的
+  *             2、内部类除了是一个类之外，与外部类没有任何区别，可以与外部类成员域一样被使用
+  *
+  */
+class OutClass{
+	private var x: Int = 0
+	class InnerClass{
+		private var y: Int = 0
+		def getOutX = x
+	}
+}
+
+object AppDemo extends App{
+	val outClass = new OutClass
+	val innerClass = new outClass.InnerClass
+	println(innerClass.getOutX)
+}
