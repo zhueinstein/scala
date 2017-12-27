@@ -70,10 +70,9 @@ object Person3{
 		//2 、辅助构造器必须首先调用主构造器或者其他定义好的辅助构造器
 
 class Person3_11 private(var name: String, var age: Int){
-	def this(name: String, age: Int){
-		this
+	def this(name: String){
+		this(name, 27)
 		this.name = name
-
 	}
 	override def toString = s"Person3_1($name,$age)"
 }
