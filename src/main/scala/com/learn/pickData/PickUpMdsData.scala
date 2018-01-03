@@ -18,7 +18,7 @@ object PickUpMdsData extends App{
 class PickUpMdsData {
 	def values(): (scala.collection.immutable.Set[ExcelEntity], scala.collection.immutable.Set[ExcelEntity]) ={
 
-		val caseName = "芜湖2017年05月01日-2017年07月30日处方评分";
+		val caseName = "美德医150";
 		val db = MongoOperator.apply.mongoClient("audit_test");
 		println(db.collectionNames().mkString(" "))
 		val collCase = db("audit_case")
@@ -72,7 +72,7 @@ class PickUpMdsData {
 				val order = orderObjects.find(oO => oO._id.get("$oid").get.equals(top.orderId)).get
 				order.drugs.foreach(drug => {
 					forTop1000 += ExcelEntity(index, order.orderNo, order.doctor, order.patient.name, if (order.patient.sex == 1) "女" else "男", order.patient.age, order.diseases.map(ds => ds.diseaseName).mkString(", "),
-						drug.drugCode, drug.commonName, drug.drugName, drug.number, drug.dosage, drug.usage, drug.standard, drug.producer, drug.packageSize, gg._2(0).automaticAuditResults.map(ds => ds.description).mkString(","))
+						drug.drugCode, drug.commonName, drug.drugName, drug.number, drug.dosage, drug.usage, drug.standard, drug.producer, drug.packageSize, gg._2(0).automaticAuditResults.map(ds => ds.description).mkString(";:"))
 					index += 1
 				})
 			})

@@ -37,7 +37,7 @@ class WriteMdsExcel {
 								case _ => Set(StringCell(0, ep.orderNo), StringCell(1, ep.doctorName), StringCell(2, ep.patientName), StringCell(3, ep.patientSex),
 									NumericCell(4, ep.patientAge.toDouble),StringCell(5, ep.orderDiseases),
 									StringCell(6, ep.drugCode), StringCell(7, ep.commonName),StringCell(8, ep.productName), NumericCell(9, ep.buyAmount.toDouble),
-									NumericCell(10, ep.frequency.toDouble), NumericCell(11, ep.useAmount.toDouble), StringCell(12, ep.standard),StringCell(13, ep.producer), NumericCell(14, ep.packageSize), StringCell(15, ep.rules))
+									NumericCell(10, ep.frequency.toDouble), NumericCell(11, ep.useAmount.toDouble), StringCell(12, ep.standard),StringCell(13, ep.producer), NumericCell(14, ep.packageSize), StringCell(15, handleRules(ep.orderNo, ep.rules)))
 							}
 						}
 					})
@@ -47,10 +47,26 @@ class WriteMdsExcel {
 
 		}
 	}
+	var set:scala.collection.mutable.Set[String] = scala.collection.mutable.Set("1")
+	def handleRules(orderNo: String, rules: String):String = {
+			println(set.size)
+			if(!set.contains(orderNo)) {
+				set = set + orderNo
+				var index = 1
+				var result = ""
+				for (rule <- rules.split(";:")) {
+					result += index + "、" + rule + "\n"
+					index += 1
+				}
+				result
+			}else {
+				""
+			}
+	}
 }
 
 object WriteMdsExcel extends App{
-	val path = "/Users/zcx/scalaExcelTest/mdy1.xls";
+	val path = "/Users/zcx/scalaExcelTest/mdy4.xls";
 	def apply: WriteMdsExcel = new WriteMdsExcel()
 	WriteMdsExcel.apply.writer(PickUpMdsData.apply.values()).safeToFile(path).fold(ex => throw ex, identity).unsafePerformIO()
 }
