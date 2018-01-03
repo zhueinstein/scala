@@ -1,5 +1,7 @@
 package com.learn.study.typebounds
 
+import scala.runtime.RichInt
+
 /**
   * 创建者： ZhuWeiFeng 
   * 日期：2018/1/2
@@ -69,4 +71,75 @@ object StudentDemo extends App{
 	//Int,Long类型都是AnyVal
 	val S2=Student("john",170.0)
 	val S3=Student("john",170L)
+	val S4=Student("john",1701L)
+}
+
+/**
+  * 视图界定
+  *     视图界定使用<%来实现
+  *      视图界定比类型变量界定限制要宽松一点，它不但可以是类继承层次结构中的类，也可以是跨越类继承层次结构的类，在后台的实现是隐式转换
+  */
+case class Lily[T, S <: Comparable[S]](name: T, age: S)
+object Lily extends App{
+	val lily = Lily("Lily", "20")
+	// 编译不通过， 因为Int没有实现Comparable接口
+//	val lily2 = Lily("Lily", 20)
+}
+// 利用<%符号来对S进行限定，它的意思是S可以是Comparable类继承层次结构中实现了Comparable接口的类，
+// 也可以是能够经过隐式转换得到的类， 该类实现了Comparable接口
+case class Lucy[T, S <% Comparable[S]](name: T, age: S)
+object Lucy extends App{
+	// Int 在后台被隐式转换成了RichInt类
+	val lucy = Lucy("Lucy", 20)
+}
+
+/**
+  *	上界 < : 和下界 >:
+  *             如T < : AnyVal  表示类型T的最顶层类是AnyVal， 所有输入AnyVal的子类都是合法的
+  *             如 R>: T 表示泛型R的类型必须是R类型的超类
+  */
+
+case class UpperBound[S, T <: AnyVal](name: T, high: T)
+class Pair1[T](val first: T, val second: T){
+	//下界通过[R >: T]的意思是
+	//泛型R的类型必须是T的超类
+	def replaceFirst[R >: T](newFirst: R) = new Pair1[R](newFirst, second)
+
+	override def toString = s"Pair1($first, $second)"
+}
+
+class Book(val name: String){
+	override def toString = s"Book($name)"
+}
+
+class EBook( name: String) extends Book(name)
+class PBook( name: String) extends Book(name)
+class WireBook( name: String) extends PBook(name)
+
+object LowerBound extends App{
+	val first = new Book("hello")
+	val second = new PBook("paper book")
+	val p1 = new Pair1(first, second)
+	println(p1)
+	val newFirst = new Book("Replace Book")
+	val p2 = p1.replaceFirst(newFirst)
+	println(p2)
+
+	val wireBook: WireBook = new WireBook("WireBook")
+	val p3 = p1.replaceFirst(wireBook)
+	println(p3)
+
+	val p4:Pair1[PBook] = new Pair1(second, second)
+	println(p4)
+
+	val thirdBook = new Book("Super Book")
+	val p5 = p4.replaceFirst(thirdBook)
+	println(p5)
+
+	// 下面可以编译通过，p1:Pair1[Book], p1.replaceFirst()，可知T为Book，R>:T,由此可知R至少为Book类型，
+	//而传入参数为WeirdBook,所以共同基类就是Book，推测R为Book类型，replaceFirst[Book>:Book](weirdFirst:Book)
+	val p6: Pair1[PBook] = p4.replaceFirst(wireBook)
+	println(p6)
+
+
 }
