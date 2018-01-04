@@ -5,7 +5,7 @@ import scala.runtime.RichInt
 /**
   * 创建者： ZhuWeiFeng 
   * 日期：2018/1/2
-  *  类型参数
+  *  类型参数1
   *
   */
 class TypeBound {
