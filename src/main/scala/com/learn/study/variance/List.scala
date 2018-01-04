@@ -88,5 +88,5 @@ object TongPeiDemo extends App{
 	def test(p: Pair[_<:Person]) = {
 		println(p.a + " teaches " + p.b)
 	}
-	test(new Pair[Person](new Teacher("WeFon", 29, 1), new Student("Lily", 18, 1))) 
+	test(new Pair[Person](new Teacher("WeFon", 29, 1), new Student("Lily", 18, 1)))
 }
