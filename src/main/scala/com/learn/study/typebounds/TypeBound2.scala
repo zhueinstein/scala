@@ -132,5 +132,5 @@ object Test02 extends App{
 
 	def bar[A,B](a:A, b:B)(implicit ev: A<:<B) = println("Ok")
 	//可以看到，隐式转换在<:<类型约束中不管用
-	bar(new A, new B)
+//	bar(new A, new B)
 }
