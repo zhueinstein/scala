@@ -110,6 +110,73 @@ object Demo10 extends App{
 
 }
 
+/**
+  *     4、抽象类型
+  *             只在抽象类或者特质中利用type关键字定义的没有类型的标识，该标志在子类中被确定，称这种类型为抽象类型
+  */
+abstract class AbstractType{
+	// 定一个抽象类型，在子类中被确定
+	type IdentityType
+
+	def getIdentityTypeNo():IdentityType
+}
+class Student100 extends AbstractType{
+	override type IdentityType = String
+
+	override def getIdentityTypeNo(): String  = "100"
+}
+class Teacher100 extends AbstractType{
+	override type IdentityType = Int
+	override def getIdentityTypeNo()= 1000
+}
+object Student100 extends App{
+	val student100 = new Student100
+	println(student100.getIdentityTypeNo())
+	val teacher100 = new Teacher100
+	println(teacher100.getIdentityTypeNo())
+}
+// 抽象类型也可以用泛型实现
+abstract class AbstractType1[T]{
+	def getIdentityTypeNo():T
+}
+class Student101 extends AbstractType1[String]{
+	override def getIdentityTypeNo(): String = "100"
+}
+class Teacher101 extends AbstractType1[Int]{
+	override def getIdentityTypeNo(): Int = 1000
+}
+
+object Student101 extends App{
+	val student101 = new Student101
+	println(student101.getIdentityTypeNo())
+	val teacher101 = new Teacher100
+	println(teacher101.getIdentityTypeNo())
+}
+//在实际应用中，如果类型是在实例化的时候给定的，推荐用类型参数进行类的定义，例如经常需要用到new Person[String,Int]（”摇摆少年梦”,18）这种创建对象的方式，此时使用泛型更为方便；
+// 如果类型是在子类型中才被确定，则推荐使用抽象类型。例如，从代码的简洁性方面考虑，下面的代码使用抽象类型的话更”省“
+// 抽象类型
+trait Closable{
+	type  in
+	type out
+	def close(x: in): out
+}
+class File extends Cloneable{
+	type in = String
+	type out = Boolean
+	def close(x:in): out = true
+	def open(x:in):out = false
+	//....其它方法
+}
+// 参数类型
+trait Closable2[T,S]{
+	def close(x:T):S
+}
+class File2 extends Closable2[String, Boolean]{
+	override def close(x: String): Boolean = true
+	def open(x: String) : Boolean = false
+	//....其它方法
+}
+//当File类中还有大量的方法要用到String及Boolean类型时，抽象类型的优越性就能表现出来。
 
 object AdvancedTypeTwo {
 
