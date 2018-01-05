@@ -45,13 +45,13 @@ class PickUpMdsData {
 		val formalResultObjects = formalResults.map(result => Json.fromJson[FormalResult](Json.parse(result.toString)).get)
 
 		val normal1000 = normalResultObjects.take(1000)
-		var norTop1000 = Set[ExcelEntity](ExcelEntity(0,"","","","",0,"","","","","","","","","", 0, ""))
+		var norTop1000 = Set[ExcelEntity](ExcelEntity(0,"","","","",0,"","","","","","","","","", 0, "",""))
 		var index = 1
 		normal1000.foreach(nm => {
 			val order = orderObjects.find(order => nm.orderId.equals(order._id.get("$oid").get)).get
 			order.drugs.foreach(drug => {
 				norTop1000 += ExcelEntity(index,order.orderNo, order.doctor, order.patient.name, if (order.patient.sex == 1) "女" else "男", order.patient.age, order.diseases.map(ds => ds.diseaseName).mkString(", "),
-				drug.drugCode, drug.commonName, drug.drugName, drug.number, drug.dosage, drug.usage, drug.standard,drug.producer,drug.packageSize, "")
+				drug.drugCode, drug.commonName, drug.drugName, drug.number, drug.dosage, drug.usage, drug.standard,drug.producer,drug.packageSize, "","")
 				index += 1
 			})
 		})
@@ -64,7 +64,7 @@ class PickUpMdsData {
 			 }
 		})
 
-		var forTop1000 = Set[ExcelEntity](ExcelEntity(0,"","","","",0,"","","","","","","","","", 0,""))
+		var forTop1000 = Set[ExcelEntity](ExcelEntity(0,"","","","",0,"","","","","","","","","", 0,"",""))
 		index = 0
 		groupMap.foreach(gg =>{
 			val top12 = gg._2.take(12)
@@ -72,7 +72,7 @@ class PickUpMdsData {
 				val order = orderObjects.find(oO => oO._id.get("$oid").get.equals(top.orderId)).get
 				order.drugs.foreach(drug => {
 					forTop1000 += ExcelEntity(index, order.orderNo, order.doctor, order.patient.name, if (order.patient.sex == 1) "女" else "男", order.patient.age, order.diseases.map(ds => ds.diseaseName).mkString(", "),
-						drug.drugCode, drug.commonName, drug.drugName, drug.number, drug.dosage, drug.usage, drug.standard, drug.producer, drug.packageSize, gg._2(0).automaticAuditResults.map(ds => ds.description).mkString(";:"))
+						drug.drugCode, drug.commonName, drug.drugName, drug.number, drug.dosage, drug.usage, drug.standard, drug.producer, drug.packageSize, gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 3).map(ds => ds.description).mkString(";:"), gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 2).map(ds => ds.description).mkString(";:"))
 					index += 1
 				})
 			})
@@ -84,10 +84,10 @@ class PickUpMdsData {
 }
 
 case class FormalResult(caseId: String, orderId: String, automaticAuditResults: List[RuleResult])
-case class RuleResult(ruleId: String, description:String, drugs:List[String])
+case class RuleResult(ruleId: String, description:String, drugs:List[String], resultType: Int)
 
 
 
 
 case class ExcelEntity(number: Int, orderNo: String,  doctorName: String, patientName: String, patientSex: String, patientAge: Int,
-					  orderDiseases: String, drugCode: String, commonName: String, productName: String, buyAmount: String, useAmount: String, frequency: String, standard: String, producer: String, packageSize: Int, rules: String)
+					  orderDiseases: String, drugCode: String, commonName: String, productName: String, buyAmount: String, useAmount: String, frequency: String, standard: String, producer: String, packageSize: Int, rules: String, dubious: String)
