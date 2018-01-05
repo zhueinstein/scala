@@ -27,4 +27,4 @@ libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.0"
 
 libraryDependencies += "com.google.guava" % "guava" % "23.0"
 
-libraryDependencies += "com.typesafe.play" % "play-json_2.11" % "2.6.3"
+libraryDependencies += "com.typesafe.play" % "play-json_2.11" % "2.6.3" 
