@@ -1,5 +1,6 @@
 package com.learn.excel
 
+import com.learn.excel.utils.ExcelUtils
 import info.folone.scala.poi.{FormulaCell, NumericCell, Row, Sheet, StringCell, Workbook}
 
 import scala.math.BigDecimal.RoundingMode
@@ -11,48 +12,43 @@ import scalaz.{-\/, \/-}
   * 用途： 读取excel文档
   */
 class ReadExcel {
-	var list: List[DrugExcelInfo] = List()
 
+
+	var finalList: List[DrugExcelInfo] = List()
 	def readExcel(): List[DrugExcelInfo] = {
-		val readResult = Workbook("/Users/zcx/scalaExcelTest/20170915-芜湖市&马鞍山目录 药品打分-v1.0(1).xlsx")
-			.map(workbook => workbook.sheets)
-			.run
-			.unsafePerformIO()
-
-		readResult match {
-			case -\/(exception) => throw new RuntimeException("Could not read file", exception)
-			case \/-(sheets) => sheets.foreach(printSheet)
-		}
-		list
+		ExcelUtils.apply[DrugExcelInfo].readExcel("/Users/zcx/scalaExcelTest/20170915-芜湖市&马鞍山目录 药品打分-v1.0(1).xlsx")(printSheet)
+		finalList
 	}
-		def printSheet(sheet: Sheet): Unit = {
+	def printSheet(sheet: Sheet): Unit = {
 			if(sheet.name.equals("马鞍山销售目录")){
 				println(s"------------ ${sheet.name} ------------\n")
 				val list:List[Row]  = sheet.rows.toList.filter( row => row.index != 0)
 				list.foreach { row =>
 					row match {
-						case Row(index, _) => if (index > 0 && index <= 160) handleRow(row)
+						case Row(index, _) => {
+							if (index > 0 && index <= 160) {
+								val  drug = new DrugExcelInfo
+								 row.cells.toList.sortBy(_.index) .foreach { ss =>
+									ss match {
+										case StringCell(index, data) => addToList(index, data,drug)
+										case NumericCell(index, data) => addToList(index, data.toString,drug)
+										case FormulaCell(index, data) => addToList(index, data,drug)
+										case _ => Some(None)
+									}
+								}
+								println(drug.getApplyDiagnose)
+								finalList = drug :: finalList
+								drug
+							}
 
+						}
 					}
 				}
-		}
-
-//			list.foreach(ss => println(ss.index + "      " + ss))
-		}
-		def handleRow(row: Row): Unit = {
-			val drug = new DrugExcelInfo;
-			row.cells.toList.sortBy(_.index) .foreach { ss =>
-				ss match {
-					case StringCell(index, data) => addToList(index, data, drug)
-					case NumericCell(index, data) => addToList(index, data.toString, drug)
-					case FormulaCell(index, data) => addToList(index, data, drug)
-					case _ => print("类型匹配错误")
-				}
 			}
-			list = drug +: list
+	}
 
-		}
-		def addToList(index: Int, data: String, drug: DrugExcelInfo) ={
+		def addToList(index: Int, data: String,drug:DrugExcelInfo):DrugExcelInfo ={
+
 			index match {
 				case 0 => if(!data.isEmpty) drug.setDrugCode(data.trim)
 				case 1 => if(!data.isEmpty) drug.setCommonName(data.trim)
@@ -104,6 +100,7 @@ class ReadExcel {
 				case _ =>
 
 			}
+			drug
 		}
 		//def xlsFile: InputStream = ReadExcelFile.getClass.getResourceAsStream("/test.xls")
 		def readFileTest()={
@@ -139,6 +136,8 @@ class ReadExcel {
 object ReadExcel extends App{
 	def apply: ReadExcel = new ReadExcel()
 
-	ReadExcel.apply.readFileTest()
+	val list= ReadExcel.apply.readExcel()
+	println(list.size)
+
 }
 
