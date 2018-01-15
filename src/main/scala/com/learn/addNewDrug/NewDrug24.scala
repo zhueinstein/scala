@@ -12,7 +12,7 @@ import info.folone.scala.poi.{FormulaCell, NumericCell, Row, Sheet, StringCell}
 object NewDrug24 {
 	var finalList: List[NewDrug] = List()
 	def readExcel(): List[NewDrug] = {
-		ExcelUtils.apply[NewDrug].readExcel("/Users/zcx/scalaExcelTest/药品信息清理-补充信息.xlsx")(printSheet)
+		ExcelUtils.apply[NewDrug]("/Users/zcx/scalaExcelTest/药品信息清理-补充信息.xlsx").readExcel(printSheet)
 		finalList
 	}
 	def printSheet(sheet: Sheet): Unit = {

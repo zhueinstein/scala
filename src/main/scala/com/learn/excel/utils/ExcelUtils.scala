@@ -9,8 +9,8 @@ import info.folone.scala.poi.{FormulaCell, NumericCell, Row, Sheet, StringCell, 
   * 创建者： ZhuWeiFeng 
   * 日期： 2018/1/11
   */
-class ExcelUtils[T] {
-	def readExcel(localUrl:String)(fun: ((Sheet) => Unit))={
+class ExcelUtils[T](localUrl:String) {
+	def readExcel(fun: ((Sheet) => Unit))={
 		val readResult = Workbook(localUrl)
 			.map(workbook => workbook.sheets)
 			.run
@@ -24,5 +24,5 @@ class ExcelUtils[T] {
 }
 
 object ExcelUtils{
-	def apply[T]: ExcelUtils[T] = new ExcelUtils()
+	def apply[T](localUrl:String): ExcelUtils[T] = new ExcelUtils(localUrl)
 }

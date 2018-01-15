@@ -16,7 +16,7 @@ class ReadExcel {
 
 	var finalList: List[DrugExcelInfo] = List()
 	def readExcel(): List[DrugExcelInfo] = {
-		ExcelUtils.apply[DrugExcelInfo].readExcel("/Users/zcx/scalaExcelTest/20170915-芜湖市&马鞍山目录 药品打分-v1.0(1).xlsx")(printSheet)
+		ExcelUtils.apply[DrugExcelInfo]("/Users/zcx/scalaExcelTest/20170915-芜湖市&马鞍山目录 药品打分-v1.0(1).xlsx").readExcel(printSheet)
 		finalList
 	}
 	def printSheet(sheet: Sheet): Unit = {
