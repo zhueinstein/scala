@@ -84,48 +84,8 @@ object OrderRuleExport {
 						BigDecimal(tuple4._4.get("totalSave").toString), "") :: orderRules
 				}
 			}
-			/*if(ruleLines != null && ruleLines.size >0) {
-				ruleLines.foreach(line => {
-					index += 1
-					if (ruleLines.indexOf(line) == 0) {
-						orderRules = OrderRule(index, tuple4._3.get("hospital").asInstanceOf[DBObject].get("hospitalName").toString, tuple4._3.get("orderNo").toString,
-							tuple4._4.get("resultType").toString, BigDecimal(tuple4._4.get("grade").toString),
-							tuple4._3.get("doctor").toString, tuple4._3.get("patient").asInstanceOf[DBObject].get("name").toString,
-							tuple4._3.get("patient").asInstanceOf[DBObject].get("age").toString.toInt, if (tuple4._3.get("patient").asInstanceOf[DBObject].get("sex").toString.toInt == 0) "女" else "男",
-							if (tuple4._3.get("mainDiagnosis") != null) {
-								tuple4._3.get("mainDiagnosis").toString
-							} else {
-								""
-							}, BigDecimal(tuple4._3.get("totalMoney").toString),
-							BigDecimal(tuple4._4.get("totalSave").toString), line) :: orderRules
-					} else {
-						orderRules = OrderRule(index, "", tuple4._3.get("orderNo").toString,
-							tuple4._4.get("resultType").toString, BigDecimal(tuple4._4.get("grade").toString),
-							tuple4._3.get("doctor").toString, tuple4._3.get("patient").asInstanceOf[DBObject].get("name").toString,
-							tuple4._3.get("patient").asInstanceOf[DBObject].get("age").toString.toInt, if (tuple4._3.get("patient").asInstanceOf[DBObject].get("sex").toString.toInt == 0) "女" else "男",
-							if (tuple4._3.get("mainDiagnosis") != null) {
-								tuple4._3.get("mainDiagnosis").toString
-							} else {
-								""
-							}, BigDecimal(tuple4._3.get("totalMoney").toString),
-							BigDecimal(tuple4._4.get("totalSave").toString), line) :: orderRules
-					}
-				})
-			}else{
-				orderRules = OrderRule(index, tuple4._3.get("hospital").asInstanceOf[DBObject].get("hospitalName").toString, tuple4._3.get("orderNo").toString,
-					tuple4._4.get("resultType").toString, BigDecimal(tuple4._4.get("grade").toString),
-					tuple4._3.get("doctor").toString, tuple4._3.get("patient").asInstanceOf[DBObject].get("name").toString,
-					tuple4._3.get("patient").asInstanceOf[DBObject].get("age").toString.toInt, if (tuple4._3.get("patient").asInstanceOf[DBObject].get("sex").toString.toInt == 0) "女" else "男",
-					if (tuple4._3.get("mainDiagnosis") != null) {
-						tuple4._3.get("mainDiagnosis").toString
-					} else {
-						""
-					}, BigDecimal(tuple4._3.get("totalMoney").toString),
-					BigDecimal(tuple4._4.get("totalSave").toString), "") :: orderRules
-			}*/
 
 		})
-//		orderRules.foreach(ds => println(ds))
 		orderRules
 	}
 

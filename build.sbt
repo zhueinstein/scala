@@ -28,3 +28,11 @@ libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.0"
 libraryDependencies += "com.google.guava" % "guava" % "23.0"
 
 libraryDependencies += "com.typesafe.play" % "play-json_2.11" % "2.6.3"
+
+libraryDependencies += "com.alibaba" % "fastjson" % "1.2.46"
+
+libraryDependencies += "com.google.code.gson" % "gson" % "2.8.2"
+
+libraryDependencies += "org.springframework.boot" % "spring-boot-starter-data-mongodb" % "1.5.3.RELEASE"
+
+libraryDependencies += "com.gingersoftware" % "object-csv_2.11" % "0.3"

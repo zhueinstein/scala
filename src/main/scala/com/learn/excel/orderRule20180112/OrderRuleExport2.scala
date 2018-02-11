@@ -17,10 +17,11 @@ object OrderRuleExport2 {
 //		val lines = Source.fromFile("/Users/zcx/scalaExcelTest//caseIdvsorderno.txt").getLines()
 //		val dsl = $and("caseId" -> "5a4b4ba138e805bfd2101bdc", "caseId" -> "5a4b4ba138e805bfd2101bdd")
 
-		println(db.find(dsl).toList.size)
+//		println(db.find(dsl).toList.size)
 	}
 
 	def main(args: Array[String]): Unit = {
-		getData()
+		val mdyRules = (1 to 20).map(ds => "MEDC_" + ds )
+		mdyRules.foreach(println(_))
 	}
 }

@@ -55,7 +55,7 @@ object ConstructorPattern extends App{
 	序列模式指的是像Array、List这样的序列集合进行模式匹配
   */
 object SequencePattern extends App{
-	val list = List("Scala", "Spark", "Java")
+	val list = List("Scala", "Spark", "Java", "C++")
 	def patternShow(x: Seq[String]) = x match {
 		case List(_, second, _) => second
 		case _ => "Other List"
