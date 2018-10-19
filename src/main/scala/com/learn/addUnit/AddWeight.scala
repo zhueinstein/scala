@@ -27,9 +27,10 @@ class AddWeight(s: Int) {
 
 object AddWeight extends App{
 	def apply(d: Int): AddWeight = new AddWeight(d)
-	AddWeight(1).add()
-	/*val standard = "复方*30片/盒"
+//	AddWeight(1).add()
+	val standard = "复方*30片/盒"
 	val r = """\d*\.?\d+[m,g,u]""".r
-
-	println(r findFirstIn standard )*/
+	println(r findFirstIn standard )
 }
+
+

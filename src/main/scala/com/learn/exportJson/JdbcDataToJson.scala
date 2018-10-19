@@ -1,8 +1,8 @@
 package com.learn.exportJson
 import java.io.{File, PrintWriter}
 
-import org.apache.commons.lang3.StringUtils
 import org.joda.time._
+import org.springframework.util.StringUtils
 import play.api.libs.json.Json
 import scalikejdbc._
 
@@ -39,6 +39,7 @@ class JdbcDataToJson{
 			             dd.frequency,
 			             doc.id AS doctorId,
 			             doc.name AS doctorName,
+			                        (SELECT group_concat(od.disease_id)   FROM order_disease od WHERE od.order_id = oi.id)  AS diseaseCodes,
 		   				 (SELECT group_concat(dis.name)   FROM order_disease od LEFT JOIN disease_info dis ON od.disease_id = dis.id WHERE od.order_id = oi.id)  AS diseaseNames
  			 FROM order_info oi
 			 LEFT JOIN doctor_hospital dh ON oi.hospital_id = dh.id
@@ -57,12 +58,14 @@ class JdbcDataToJson{
 					map.get(orderInfo.orderNo).get.drugs += DrugDetail(orderInfo.productCode, orderInfo.amount.intValue(), orderInfo.useAmount.intValue(), orderInfo.price, orderInfo.frequency)
 				} else {
 
-					var diseases: Set[Disease] = Set()
-					if(orderInfo.diseaseNames != null ) orderInfo.diseaseNames.split(",").foreach { ddd => diseases += Disease(ddd) }
-
+					var diseases: List[Disease] = List()
+					if(orderInfo.diseaseCodes != null && orderInfo.diseaseNames != null) {
+						val zips = orderInfo.diseaseCodes.split(",").toList.zip(orderInfo.diseaseNames.split(",").toList);
+						diseases = zips.map(zipv => new Disease(zipv._1, zipv._2))
+					}
 					map.put(orderInfo.orderNo, OrderJsonObject(orderInfo.orderNo,
 						orderInfo.orderDate.toString("yyyy-MM-dd"),
-						if(StringUtils.isNotBlank(orderInfo.doctorName)) orderInfo.doctorName else "默认",
+						if(null == orderInfo.doctorName) orderInfo.doctorName else "默认",
 						orderInfo.cycle,
 						orderInfoList.filter(orderE => orderE.orderNo.equals(orderInfo.orderNo))
 							.map(mm => (mm.amount * mm.price).setScale(2, RoundingMode.HALF_UP)).reduce((o1, o2) => (o1 + o2).setScale(2, RoundingMode.HALF_UP)),
@@ -83,7 +86,7 @@ class JdbcDataToJson{
 		implicit val DrugDetailWrites = Json.writes[DrugDetail]
 		implicit val residentWrites = Json.writes[OrderJsonObject]
 		println(Json.toJson(map.values.toList))
-		val writer = new PrintWriter(new File("/Users/zcx/scalaExcelTest/test_20171227.json" ))
+		val writer = new PrintWriter(new File("/Users/zcx/scalaExcelTest/test_20180308.json" ))
 		try {
 			writer.write(Json.toJson(map.values.toList).toString())
 		}finally {
@@ -100,10 +103,10 @@ object JdbcDataToJson extends App{
 case class OrderInfo(id: String, orderNo: String, orderDate: DateTime, patientName: String,
 					 age: Int, sex: Int, idCard: String, cycle: Int, hospitalId: String, hospitalName: String,
 					 productCode: String, amount: BigDecimal, useAmount: BigDecimal,price: BigDecimal, frequency:  String,
-					 doctorId: String, doctorName: String, diseaseNames:String)
+					 doctorId: String, doctorName: String, diseaseCodes:String, diseaseNames:String)
 
 case class OrderJsonObject(orderNo: String, orderDate: String, doctor: String, cycle: Int, totalMoney: BigDecimal,
-						   hospitalId: String, hospitalName: String, patient: Patient, drugs: Set[DrugDetail], diseases: Set[Disease])
+						   hospitalId: String, hospitalName: String, patient: Patient, drugs: Set[DrugDetail], diseases: List[Disease])
 
 
 object OrderInfo extends SQLSyntaxSupport[OrderInfo]{
@@ -126,6 +129,7 @@ object OrderInfo extends SQLSyntaxSupport[OrderInfo]{
 		rs.string("frequency"),
 		rs.string("doctorId"),
 		rs.string("doctorName"),
+		rs.string("diseaseCodes"),
 		rs.string("diseaseNames")
 	)
 }
@@ -134,7 +138,7 @@ case class Hospital(hospitalId: String, hospitalName: String)
 
 case class OrderDisease(orderId: String, diseaseId: String)
 
-case class Disease(diseaseName: String)
+case class Disease(diseaseCode: String, diseaseName: String)
 
 case class  DrugDetail( drugCode: String, number: Int, dosage: Int, price: BigDecimal, usage: String )
 

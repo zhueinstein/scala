@@ -66,7 +66,7 @@ case class AuditOrder(_id: Map[String, String], orderNo: String, patient:Patient
 case class Patient(name: String, age: Int, sex: Int, idCard: String)
 case class Disease(diseaseName: String)
 case class Drug(drugCode: String, drugName: String, usage: String, number: String, price: String, dosage: String , packageSize: Int,
-					maximumDose: String, maximumDoseDaily: String, commonName: String, standard: String, producer: String)
+					maximumDose: String, maximumDoseDaily: String, commonName: String, standard: String, producer: String, dosageForms: Option[String])
 case class Category(categoryName: String)
 case class Ingredient(ingredientName: String)
 case class Result(caseId: String, orderId: String, grade: String, drugScores: Map[String, Int])

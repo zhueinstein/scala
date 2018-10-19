@@ -36,3 +36,9 @@ libraryDependencies += "com.google.code.gson" % "gson" % "2.8.2"
 libraryDependencies += "org.springframework.boot" % "spring-boot-starter-data-mongodb" % "1.5.3.RELEASE"
 
 libraryDependencies += "com.gingersoftware" % "object-csv_2.11" % "0.3"
+
+libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.7"
+
+libraryDependencies += "org.projectlombok" % "lombok" % "1.16.18" % "provided"
+
+libraryDependencies += "cglib" % "cglib" % "3.2.6"

@@ -18,7 +18,7 @@ object PickUpMdsData extends App{
 class PickUpMdsData {
 	def values(): (scala.collection.immutable.Set[ExcelEntity], scala.collection.immutable.Set[ExcelEntity]) ={
 
-		val caseName = "美德医150";
+		val caseName = "美德医150 07";
 		val db = MongoOperator.apply.mongoClient("audit_test");
 		println(db.collectionNames().mkString(" "))
 		val collCase = db("audit_case")
@@ -45,13 +45,13 @@ class PickUpMdsData {
 		val formalResultObjects = formalResults.map(result => Json.fromJson[FormalResult](Json.parse(result.toString)).get)
 
 		val normal1000 = normalResultObjects.take(1000)
-		var norTop1000 = Set[ExcelEntity](ExcelEntity(0,"","","","",0,"","","","","","","","","", 0, "","","",""))
+		var norTop1000 = Set[ExcelEntity](ExcelEntity(0,"","","","",0,"","","","","","","","","", 0, "","","","","",""))
 		var index = 1
 		normal1000.foreach(nm => {
 			val order = orderObjects.find(order => nm.orderId.equals(order._id.get("$oid").get)).get
 			order.drugs.foreach(drug => {
 				norTop1000 += ExcelEntity(index,order.orderNo, order.doctor, order.patient.name, if (order.patient.sex == 1) "女" else "男", order.patient.age, order.diseases.map(ds => ds.diseaseName).mkString(", "),
-				drug.drugCode, drug.commonName, drug.drugName, drug.number, drug.dosage, drug.usage, drug.standard,drug.producer,drug.packageSize, "","","","")
+				drug.drugCode, drug.commonName, drug.drugName, drug.number, drug.dosage, drug.usage, drug.standard,drug.producer,drug.packageSize, "","","","","","")
 				index += 1
 			})
 		})
@@ -64,7 +64,7 @@ class PickUpMdsData {
 			 }
 		})
 
-		var forTop1000 = Set[ExcelEntity](ExcelEntity(0,"","","","",0,"","","","","","","","","", 0,"","", "",""))
+		var forTop1000 = Set[ExcelEntity](ExcelEntity(0,"","","","",0,"","","","","","","","","", 0,"","", "","", "",""))
 		index = 0
 
 		val mdyRules = (1 to 20).map(ds => "MEDC_" + ds ).toList
@@ -76,10 +76,11 @@ class PickUpMdsData {
 					println(gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 2).filter(de => !mdyRules.contains(de.ruleId)).filter(df => df.drugs.contains(drug.drugCode)).map(ds => ds.description).mkString(";:"))
 					forTop1000 += ExcelEntity(index, order.orderNo, order.doctor, order.patient.name, if (order.patient.sex == 1) "女" else "男", order.patient.age, order.diseases.map(ds => ds.diseaseName).mkString(", "),
 						drug.drugCode, drug.commonName, drug.drugName, drug.number, drug.dosage, drug.usage, drug.standard, drug.producer, drug.packageSize,
-						gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 3).filter(de => !mdyRules.contains(de.ruleId)).filter(df => df.drugs.contains(drug.drugCode)).map(ds => ds.description).mkString(";:"),
-						gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 2).filter(de => !mdyRules.contains(de.ruleId)).filter(df => df.drugs.contains(drug.drugCode)).map(ds => ds.description).mkString(";:"),
-						gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 3).filter(de => mdyRules.contains(de.ruleId)).filter(df => df.drugs.contains(drug.drugCode)).map(ds => ds.description).mkString(";:"),
-						gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 2).filter(de => mdyRules.contains(de.ruleId)).filter(df => df.drugs.contains(drug.drugCode)).map(ds => ds.description).mkString(";:")
+						gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 3).filter(de => !mdyRules.contains(de.ruleId)).filter(df => df.drugs.contains(drug.drugCode)).map(ds => "[" + ds.drugs.distinct.mkString(",") + "]" + ds.description).mkString(";:"),
+						gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 2).filter(de => !mdyRules.contains(de.ruleId)).filter(df => df.drugs.contains(drug.drugCode)).map(ds => "[" + ds.drugs.distinct.mkString(",") + "]" + ds.description).mkString(";:"),
+						gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 3).filter(de => mdyRules.contains(de.ruleId)).filter(df => df.drugs.contains(drug.drugCode)).map(ds => "[" + ds.drugs.distinct.mkString(",") + "]" + ds.description).mkString(";:"),
+						gg._2(0).automaticAuditResults.filter(dd => dd.resultType == 2).filter(de => mdyRules.contains(de.ruleId)).filter(df => df.drugs.contains(drug.drugCode)).map(ds => "[" + ds.drugs.distinct.mkString(",") + "]" + ds.description).mkString(";:"),
+						if(drug.dosageForms.isDefined) drug.dosageForms.get else "", "A1"
 					)
 					index += 1
 				})
@@ -100,4 +101,4 @@ case class RuleResult(ruleId: String, description:String, drugs:List[String], re
 case class ExcelEntity(number: Int, orderNo: String,  doctorName: String, patientName: String, patientSex: String, patientAge: Int,
 					  orderDiseases: String, drugCode: String, commonName: String, productName: String, buyAmount: String,
                                           useAmount: String, frequency: String, standard: String, producer: String, packageSize: Int,
-                                          violateWHRules: String, dubiousWHRules: String, violateMDYRules: String,dubiousMDYRules: String)
+                                          violateWHRules: String, dubiousWHRules: String, violateMDYRules: String,dubiousMDYRules: String,  useUnit: String,  giveRoad: String)
