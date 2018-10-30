@@ -42,3 +42,5 @@ libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.7"
 libraryDependencies += "org.projectlombok" % "lombok" % "1.16.18" % "provided"
 
 libraryDependencies += "cglib" % "cglib" % "3.2.6"
+// https://mvnrepository.com/artifact/redis.clients/jedis
+libraryDependencies += "redis.clients" % "jedis" % "2.9.0"
