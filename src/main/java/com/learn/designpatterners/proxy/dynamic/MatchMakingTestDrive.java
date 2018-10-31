@@ -21,6 +21,7 @@ public class MatchMakingTestDrive {
 		private void drive() {
 				PersonBean joe = getPersonFromDataBase("Joe JavaBean");
 				PersonBean ownerProxy = getOwnerBean(joe);
+				System.out.println(Proxy.isProxyClass(ownerProxy.getClass()));
 				System.out.println("Name is " + ownerProxy.getName());
 				ownerProxy.setInterests(" blowing Go");
 				System.out.println("Interest set from owner proxy");
