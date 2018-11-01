@@ -15,7 +15,7 @@ package com.learn.study.caseClass
 abstract class Person
 
 case class Student(var name: String, age: Int, studentNo: Int) extends Person
-case class Teacher(name: String, age:Int, teacherNo: Int) extends Person
+case class Teacher(var name: String, age:Int, teacherNo: Int) extends Person
 case class NoBody(name: String) extends Person
 
 // 多个参数的case class
@@ -31,12 +31,19 @@ object GiveNames{
 }
 class GiveNames(name: String, age: Int) extends Person
 object CaseClass01 extends App{
-	val p: Person = new Student("WeFon", 28, 1)
-	p match {
+	val p1: Person = new Student("WeFon", 28, 1)
+	val t1: Person = new Student("Teacher", 22, 2)
+	t1 match {
 		case Student(name, _, _) => println(s"$name is the student name")
 		case Teacher(name, _,_) => println(s"$name is the teacher name")
 		case NoBody(name) => println(s"$name is noBody")
 	}
+
+	/*t match {
+		case Teacher(name, _,_) => println(s"$name is the teacher name")
+		case Student(name, _, _) => println(s"$name is the student name")
+		case NoBody(name) => println(s"$name is noBody")
+	}*/
 
 	val name = "WeFon";
 	name match{

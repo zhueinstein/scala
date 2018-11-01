@@ -20,7 +20,7 @@ object ConstantPattern  extends App{
 		case _ => "Other Constant"
 	}
 
-	println(patternShow(5))
+	println(patternShow(59))
 }
 
 /**
