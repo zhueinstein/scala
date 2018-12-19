@@ -1,7 +1,7 @@
 package com.learn.functional;
 
 /**
- * @Description:TODO
+ *
  * @author: WeFon
  * @date: 2018-09-05 23:19
  * @Copyright: 2018

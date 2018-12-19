@@ -1,7 +1,7 @@
 package com.learn.designpatterners.decorate.beifeng;
 
 /**
- * @Description:TODO
+ *
  * @author: WeFon
  * @date: 2018-10-28 19:45
  * @Copyright: 2018

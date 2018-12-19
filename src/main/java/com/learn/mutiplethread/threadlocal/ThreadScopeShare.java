@@ -6,7 +6,7 @@ import java.util.Random;
 
 /**
  * @ClassName: ThreadScopeShare
- * @Description:TODO
+ *
  * @author: 亚信安全NSG WeFon
  * @date: 2018/7/17
  * @Copyright: 2018

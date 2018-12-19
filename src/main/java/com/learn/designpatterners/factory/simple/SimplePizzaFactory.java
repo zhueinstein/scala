@@ -1,7 +1,7 @@
 package com.learn.designpatterners.factory.simple;
 
 /**
- * @Description:TODO
+ *
  * @author: WeFon
  * @date: 2018-10-29 20:49
  * @Copyright: 2018

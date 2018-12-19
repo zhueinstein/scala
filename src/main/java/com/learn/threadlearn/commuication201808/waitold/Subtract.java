@@ -1,7 +1,7 @@
 package com.learn.threadlearn.commuication201808.waitold;
 
 /**
- * @Description:TODO
+ *
  * @author: WeFon
  * @date: 2018-08-15 15:05
  * @Copyright: 2018

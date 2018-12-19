@@ -5,7 +5,7 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  * @ClassName: BlockingQueneComunication
- * @Description:TODO
+ *
  * @author: 亚信安全NSG WeFon
  * @date: 2018/8/9
  * @Copyright: 2018

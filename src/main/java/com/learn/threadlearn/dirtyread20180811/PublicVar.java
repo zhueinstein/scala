@@ -2,7 +2,7 @@ package com.learn.threadlearn.dirtyread20180811;
 
 /**
  * @ClassName: UcInfoEnterpriseExample
- * @Description:TODO
+ *
  * @author: 亚信安全NSG WeFon
  * @date: 2018/8/11
  * @Copyright: 2018

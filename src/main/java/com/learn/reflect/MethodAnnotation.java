@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @Description:TODO
+ *
  * @author: WeFon
  * @date: 2018-08-13 23:48
  * @Copyright: 2018

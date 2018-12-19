@@ -1,7 +1,7 @@
 package com.learn.designpatterners.proxy.dynamic;
 
 /**
- * @Description:TODO
+ *
  * @author: WeFon
  * @date: 2018-10-30 22:51
  * @Copyright: 2018

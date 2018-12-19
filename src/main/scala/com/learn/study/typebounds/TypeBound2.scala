@@ -18,11 +18,7 @@ object TypeBound2  extends App{
 	val st2 = Student_("Lucy")
 	println(st1.compare(st2))
 }
-/**
-  *     上下文界定
-  *             视图界定可以跨越类继承层次结构， 其后面的远离就是隐式转换
-  *             下面的上下文界定采用隐式值来实现，上下文界定的类型参数形式为 T: M的形式， 其中M是泛型，这种形式要求一个M[T]的隐式值
-  */
+
 case class Persons(name: String){
 	println(s"正在构建对象$name")
 }
@@ -31,6 +27,11 @@ class PersonOrdering extends Ordering[Persons]{
 		if(x.name < y.name) -1 else 1
 	}
 }
+/**
+  *     上下文界定
+  *             视图界定可以跨越类继承层次结构， 其后面的原理就是隐式转换
+  *             下面的上下文界定采用隐式值来实现，上下文界定的类型参数形式为 T: M的形式， 其中M是泛型，这种形式要求一个M[T]的隐式值
+  */
 //下面的代码定义了一个上下文界定
 //它的意思是在对应作用域中，必须存在一个类型为Ordering[T]的隐式值，该隐式值可以作用于内部的方法
 class Pair[T:Ordering](first: T, second: T){
@@ -79,12 +80,12 @@ object MultipleBound extends App{
 	def test[T:A: B](x: String) = println(x)
 	test("WeFon")
 
-	implicit def t2A[T](x:T) = new A[T]
-	implicit def t2B[T](x:T) = new B[T]
+//	implicit def t2A[T](x:T) = new A[T]
+//	implicit def t2B[T](x:T) = new B[T]
 	//多重视图界定，必须存在T到A，T到B的隐式转换
 	//前面我们定义的两个隐式转换函数就是
 	def test2[T <% A[T]<% B[T]](x:String) = println(x)
-	test2("WeFon2")
+	test2("W呃呃F筽嘛")
 
 	def test3[C >:E <:D](x: E) = println(x)
 	test3(new E)

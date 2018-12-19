@@ -5,7 +5,7 @@ import java.util.TimerTask;
 
 /**
  * @ClassName: UcInfoEnterpriseExample
- * @Description:TODO
+ *
  * @author: 亚信安全NSG WeFon
  * @date: 2018/7/16
  * @Copyright: 2018

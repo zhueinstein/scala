@@ -16,7 +16,7 @@ public class BlockQueneTest {
 		private static BlockingQueue blockingQueue = new ArrayBlockingQueue(3);
 
 		public static void main(String[] args){
-				for(int i = 0; i < 2; i++){
+				for(int i = 0; i < 6; i++){
 						new Thread(new Runnable() {
 								@Override
 								public void run() {
